@@ -1,5 +1,5 @@
-Name:		ngx_openresty
-Version:	1.9.3.1
+Name:		ngx_openresty-mono
+Version:	1.9.7.2
 Release:	2%{?dist}
 Summary:	a fast web app server by extending nginx
 Distribution: CentOS 7
@@ -12,7 +12,7 @@ Source1:	https://raw.githubusercontent.com/williamcaban/ngx_openresty-rpm-spec/m
 Packager:   William Caban <william.caban@savantadvisors.com>
 
 BuildRequires:	sed git make gcc postgresql-devel readline-devel pcre-devel openssl-devel gcc pcre-devel libxml2-devel libxslt-devel gd-devel geoip-devel gperftools-devel libatomic_ops-devel lua-devel
-Requires:	postgresql readline pcre openssl pcre libxml2 libxslt gd geoip gperftools libatomic
+Requires:	postgresql readline pcre openssl pcre libxml2 libxslt gd geoip 
 Requires(pre):	shadow-utils
 
 %define user nginx
@@ -46,14 +46,6 @@ http_degradation_module
 http_stub_status_module
 http_ssl_module
 with-http_realip_module
-mail
-mail_ssl_module
-google_perftools_module
-pcre
-pcre-jit
-md5-asm
-sha1-asm
-libatomic
 pcre-jit
 luajit
 lua51
@@ -63,39 +55,9 @@ lua51
 
 %build
 ./configure --prefix=%{homedir} \
---with-http_iconv_module \
---with-http_postgres_module \
---with-pg_config=/usr/bin/pg_config \
---with-select_module \
---with-poll_module \
---with-file-aio \
---with-http_realip_module \
---with-http_addition_module \
---with-http_xslt_module \
---with-http_image_filter_module \
---with-http_geoip_module \
---with-http_sub_module \
---with-http_dav_module \
---with-http_flv_module \
---with-http_gzip_static_module \
---with-http_auth_request_module \
---with-http_random_index_module \
---with-http_secure_link_module \
---with-http_degradation_module \
---with-http_stub_status_module \
---with-http_ssl_module \
---with-http_realip_module \
---with-mail \
---with-mail_ssl_module \
---with-google_perftools_module \
---with-pcre \
 --with-pcre-jit \
---with-md5-asm \
---with-sha1-asm \
---with-libatomic \
---with-pcre-jit \
---with-luajit \
---with-lua51
+--with-ipv6 \
+--with-openssl="./openssl-1.0.2e"
 
 make %{?_smp_mflags}
 
@@ -163,7 +125,10 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Thu Sep 06 2015 William Caban <william.caban@savantadvisors.com> 1.9.3.1-2
+* Wed Jan 06 2016 Thomas Nielsen <tfn@monosolutions.com> 1.9.7.1 
+- Use custom openssl libs, also compile from master for now.
+
+* Sun Sep 06 2015 William Caban <william.caban@savantadvisors.com> 1.9.3.1-2
 - Add explicit support for pcre-jit, luajit, lua51
 
 * Thu Sep 03 2015 William Caban <william.caban@savantadvisors.com> 1.9.3.1-1
